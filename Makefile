@@ -1,24 +1,32 @@
+# Compiler and flags
 CC = gcc
-CFLAGS = -g -Wall -I$(GAMEOBJECTS_DIR) -I$(UTIL_DIR)
+CFLAGS = -g -Wall -I$(SRC_DIR)
 
-#file stuff
-UTIL_DIR = util
-GAMEOBJECTS_DIR = gameObjects
-SRC = gameScreen.c \
-      $(UTIL_DIR)/point.c $(UTIL_DIR)/rectangle.c \
-      $(GAMEOBJECTS_DIR)/dungeon.c $(GAMEOBJECTS_DIR)/tile.c
+# Directories
+SRC_DIR = src
 
-# Other
+# Source files
+SRC = $(SRC_DIR)/Card.c \
+      $(SRC_DIR)/Deck.c \
+      $(SRC_DIR)/Game.c \
+      $(SRC_DIR)/Hand.c \
+      $(SRC_DIR)/Ui.c \
+      $(SRC_DIR)/main.c
+
+# Object files
 OBJ = $(SRC:.c=.o)
-TARGET = assignment01
 
-# first rule
+# Target executable
+TARGET = game
+
+# Build rule
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) -lm
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) -lncurses
 
-%.o: %.c
+# Compile source files into object files
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Clean rule
 clean:
 	rm -f $(OBJ) $(TARGET)
-

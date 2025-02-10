@@ -1,36 +1,53 @@
 #include "Hand.h"
+#include "Deck.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-void populateHand(Hand *hand, Deck *deck){
-    for(int i = 0; i < deck->numCards && i < hand->size; i++){
-        int drew = drawCard(deck, hand->cards[i]); //add a card from the deck to the array of pointers to cards that point to some card in the deck
-        if(drew){
-            hand->numCards++;
-        } else {
-            printf("could not draw card when populating hand");
-            return;
-        }
+#define INITIAL_HAND_CAPACITY 5
+
+void initHand(Hand *hand) {
+    hand->capacity = INITIAL_HAND_CAPACITY;
+    hand->numCards = 0;
+    hand->cards = malloc(hand->capacity * sizeof(Card *));
+    if(hand->cards == NULL){
+        perror("Failed to allocate memory for hand");
+        exit(EXIT_FAILURE);
     }
 }
 
-int evalHandBasic(Hand *hand){
+void populateHand(Hand *hand, Deck *deck) {
+    hand->numCards = 0;
+    int cardsToDraw = (hand->capacity < deck->numCards) ? hand->capacity : deck->numCards;
+    for (int i = 0; i < cardsToDraw; i++){
+        hand->cards[i] = deck->cards[i];
+        hand->numCards++;
+    }
+}
+
+int evalHandBasic(Hand *hand) {
     int total = 0;
     for(int i = 0; i < hand->numCards; i++){
-        switch(*(hand->cards[i]).op) {
+        switch(hand->cards[i]->op) {
             case ADD:
-                total += *(hand->cards[i].value);
+                total += hand->cards[i]->value;
                 break;
             case MULT:
-                printf("not done yet!");
+                printf("MULT not implemented.\n");
                 break;
             case NTH:
-                printf("not done yet!");
+                printf("NTH not implemented.\n");
                 break;
             case EQ:
-                printf("not done yet!");
+                printf("EQ not implemented.\n");
                 break;
             default:
-                printf("unknown operator not done yet!");
+                printf("Unknown operator.\n");
                 break;
         }
     }
+    return total;
+}
+
+void freeHand(Hand *hand) {
+    free(hand->cards);
 }

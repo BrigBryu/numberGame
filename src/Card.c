@@ -1,31 +1,14 @@
-#include <stdlib.h>
 #include "Card.h"
-
-CardType generateCardType(int);
-OperatorType generateCardOp(int);
-int generateCardValue(int);
-int generateCardPrice(int);
-
-void generateCard(Card *cardp, int level){
-    cardp->type = generateCardType(level);
-    cardp->op = generateCardOp(level);
-    card->value = generateCardValue(level);
-    card->price = generateCardPrice(level);
-}
+#include <stdlib.h>
 
 CardType generateCardType(int level){
-    return BASIC;
     int chance = rand() % 100 + 1;
-
     if(chance < 75 - level) {
-        //common
-
-    } else if (chance < 95 - level) {
-        //rare
-    } else if(chance <= 100 - level) {
-        //epic
+        return BASIC;
+    } else if(chance < 95 - level) {
+        return RARE;
     } else {
-        //common to catch mistakes
+        return EPIC;
     }
 }
 
@@ -37,6 +20,9 @@ int generateCardValue(int level){
     return 5;
 }
 
-int generateCardPrice(int level){
-    return 10;
+void generateCard(Card *cardp, int level){
+    cardp->type = generateCardType(level);
+    cardp->op = generateCardOp(level);
+    cardp->value = generateCardValue(level);
+    cardp->position = 0;  // default starting position
 }

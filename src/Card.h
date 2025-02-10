@@ -4,7 +4,7 @@
 typedef enum {
     BASIC = 0,
     RARE,
-    EPIC;
+    EPIC
 } CardType;
 
 typedef enum {
@@ -21,5 +21,5 @@ typedef struct {
     int position; //position 0 is next to serve position -1 is not to be served any positive is number away from next serve
 } Card;
 
-void generateCard(Card *cardp);
+void generateCard(Card *cardp, int level);
 #endif
